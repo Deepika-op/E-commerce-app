@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
@@ -42,20 +41,22 @@ export default function Login() {
         return;
       }
 
-      localStorage.setItem("token", token);
+      //Save Token to localStorage
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.user.id);
 
       setSuccess(true);
       setMsg("Login successful!");
 
-      navigate("/", { replace: true });
+      navigate("/", 1000);
     } catch (error) {
-       console.log("Error message:", error.message);
-       console.log("Request URL:", error.config?.baseURL);
-       console.log("Full URL:", error.config?.url);
-       console.log("Response:", error.response);
+      console.log("Error message:", error.message);
+      console.log("Request URL:", error.config?.baseURL);
+      console.log("Full URL:", error.config?.url);
+      console.log("Response:", error.response);
 
-       setMsg(error.message || "Login failed!");
-      } finally {
+      setMsg(error.message || "Login failed!");
+    } finally {
       setLoading(false);
     }
   };

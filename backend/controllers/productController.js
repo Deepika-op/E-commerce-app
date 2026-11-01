@@ -21,7 +21,20 @@ export const createProduct = async (req, res) => {
 // Get all products
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().sort({ createdAt: -1 });
+    const {search, category} = req.query;
+    console.log("QUERY:", req.query);
+
+    let filter = {};
+
+    if(search){
+      filter.title = {$regex: search, $options: 'i'};
+    }
+
+    if(category){
+      filter.category = category;
+    }
+    console.log("FILTER:", filter);
+    const products = await Product.find(filter).sort({ createdAt: -1 });
     res.json(products);
   } catch (error) {
     console.error("Get Products Error:", error);
